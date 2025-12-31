@@ -119,10 +119,51 @@ function sendMaterialRequest() {
     // This opens the user's email app with the request already typed!
     const mailtoLink = `mailto:pramangsuacharjee883@gmail.com?subject=Material Request&body=${encodeURIComponent(note)}`;
     window.location.href = mailtoLink;
-}
-</script>
-
+    ... (rest of your html) ...
     </main>
+
+    <script>
+    const library = {
+        science: [{ title: "Science Solved Paper 2024", url: "" }],
+        maths: [{ title: "Maths Chapter 1-5 Solved", url: "" }],
+        english: [{ title: "English Grammar Master Sheet", url: "" }]
+    };
+
+    function showSubject(subject) {
+        const list = document.getElementById('materialList');
+        document.querySelectorAll('.subject-btn').forEach(btn => {
+            btn.classList.remove('bg-blue-600', 'text-white');
+            btn.classList.add('bg-white', 'text-slate-600');
+        });
+        event.currentTarget.classList.add('bg-blue-600', 'text-white');
+        list.innerHTML = library[subject].map(file => `
+            <div onclick="openViewer('${file.url}', '${file.title}')" class="bg-white p-5 rounded-3xl border border-slate-100 flex items-center justify-between active:scale-95 shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center"><i class="fas fa-file-pdf"></i></div>
+                    <div><h4 class="text-xs font-bold text-slate-800">${file.title}</h4><p class="text-[9px] text-slate-400 uppercase">View Only</p></div>
+                </div>
+                <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
+            </div>
+        `).join('');
+    }
+
+    function openViewer(url, title) {
+        if(!url) { alert("Uploading soon!"); return; }
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('pdfFrame').src = `https://docs.google.com/viewer?url=${url}&embedded=true`;
+        document.getElementById('pdfModal').classList.remove('hidden');
+    }
+
+    function closeViewer() {
+        document.getElementById('pdfModal').classList.add('hidden');
+        document.getElementById('pdfFrame').src = "";
+    }
+
+    showSubject('science');
+    </script>
+</body>
+</html>
+
 
     <nav class="fixed bottom-6 left-6 right-6 glass border border-white/50 h-20 rounded-3xl shadow-2xl flex items-center justify-around px-2">
         <button class="text-blue-600 flex flex-col items-center gap-1">
